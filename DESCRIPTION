@@ -1,0 +1,23 @@
+Package: pneumatools
+Title: Pneumatron Data Analysis Tools
+Version: 0.1.0
+Authors@R: 
+    person(c("Gabriel", "S."), "Pires", , "gabriel.slpires@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-5354-1957"))
+Description: This package provides tools for analyzing Pneumatron data,
+    useful in plant hydraulic studies. It includes functions for data
+    processing and a user-friendly dashboard for interactive analysis,
+    enabling users to perform complex analyses without needing to program.
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Imports: 
+    data.table,
+    lubridate,
+    methods,
+    shiny
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
