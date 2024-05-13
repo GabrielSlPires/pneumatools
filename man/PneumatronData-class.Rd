@@ -12,6 +12,8 @@ It utilizes \code{data.table} for data manipulation, ensuring fast processing an
 \section{Slots}{
 
 \describe{
+\item{\code{data}}{data.table, represents the data stored in a data.table.}
+
 \item{\code{file_path}}{Character vector, represents the file path for the data file.}
 
 \item{\code{data_format}}{Character vector, specifies the Pneumatron data format of the data (e.g., V2, V3, V4).}
@@ -19,7 +21,7 @@ It utilizes \code{data.table} for data manipulation, ensuring fast processing an
 
 \examples{
 # To convert a data.frame to PneumatronData, first ensure your data.frame includes
-# the required columns: id, measure, log_line, and pressure. Here's an example:
+# the required columns: id, measure, log_line, pressure, and datetime. Here's an example:
 df <- data.frame(
   id = c(1, 1, 1, 1, 1),
   measure = c(1, 2, 3, 4, 5),

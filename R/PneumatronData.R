@@ -3,11 +3,12 @@
 #' This class is designed for managing large datasets from Pneumatron devices efficiently.
 #' It utilizes `data.table` for data manipulation, ensuring fast processing and easy handling of data.
 #'
+#' @slot data data.table, represents the data stored in a data.table.
 #' @slot file_path Character vector, represents the file path for the data file.
 #' @slot data_format Character vector, specifies the Pneumatron data format of the data (e.g., V2, V3, V4).
 #' @examples
 #' # To convert a data.frame to PneumatronData, first ensure your data.frame includes
-#' # the required columns: id, measure, log_line, and pressure. Here's an example:
+#' # the required columns: id, measure, log_line, pressure, and datetime. Here's an example:
 #' df <- data.frame(
 #'   id = c(1, 1, 1, 1, 1),
 #'   measure = c(1, 2, 3, 4, 5),
@@ -23,38 +24,36 @@
 PneumatronData <- setClass(
   Class = "PneumatronData",
   slots = c(
+    data = "data.table",
     file_path = "character",
     data_format = "character"
-  ),
-  prototype = prototype(
-    file_path = NA_character_,
-    data_format = NA_character_
-  ),
-  contains = c("data.table")
+  )
 )
 
-setMethod("initialize", "PneumatronData", function(.Object, data, ...) {
-  required_columns <- c("id", "measure", "log_line", "pressure", "datetime")
-
-  # Check if 'data' is data.table, if not, try to convert it
+setMethod("initialize", "PneumatronData", function(.Object, data, file_path = NA_character_, data_format = NA_character_, ...) {
+  # Ensure input data is a data.table
   if (!inherits(data, "data.table")) {
-    if (is.data.frame(data) || is.list(data)) {
-      data.table::setDT(data)
+    if (is.data.frame(data)) {
+      data <- data.table::as.data.table(data)
     } else {
       stop("Data must be a data.table, data.frame, or list")
     }
   }
 
-  # Check if 'data$datetime' is data.table, if not, try to convert it
-  if (!inherits(data$datetime, "POSIXct")) {
+  # Ensure datetime column is of POSIXct type
+  if (!inherits(data[["datetime"]], "POSIXct")) {
     stop("Column datetime must be a POSIXct")
   }
 
+  required_columns <- c("id", "measure", "log_line", "pressure", "datetime")
   missing_cols <- setdiff(required_columns, names(data))
   if (length(missing_cols) > 0) {
-    stop("At least one required column is missing:", paste(missing_cols, collapse = ", "))
+    stop("At least one required column is missing: ", paste(missing_cols, collapse = ", "))
   }
 
-  .Object <- callNextMethod(.Object, data, ...)
+  .Object@data <- data
+  .Object@file_path <- file_path
+  .Object@data_format <- data_format
+
   return(.Object)
 })
