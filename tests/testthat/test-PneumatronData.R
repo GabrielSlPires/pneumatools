@@ -3,7 +3,8 @@ test_that("PneumatronData initializes correctly with valid data", {
     id = c(1, 1, 1, 1, 1),
     measure = 1:5,
     log_line = 1:5,
-    pressure = c(100, 40, 40.7, 41.5, 41.9)
+    pressure = c(100, 40, 40.7, 41.5, 41.9),
+    datetime = as.POSIXct(c("2024-05-13 13:54:26", "2024-05-13 13:54:26", "2024-05-13 13:54:27", "2024-05-13 13:54:27", "2024-05-13 13:54:28"))
   )
   obj <- PneumatronData(df)
   expect_s4_class(obj, "PneumatronData")
@@ -14,9 +15,21 @@ test_that("Initialization fails with missing required columns", {
     id = c(1, 1, 1, 1, 1),
     measure = 1:5,
     # log_line is missing
-    pressure = c(100, 40, 40.7, 41.5, 41.9)
+    pressure = c(100, 40, 40.7, 41.5, 41.9),
+    datetime = as.POSIXct(c("2024-05-13 13:54:26", "2024-05-13 13:54:26", "2024-05-13 13:54:27", "2024-05-13 13:54:27", "2024-05-13 13:54:28"))
   )
-  expect_error(PneumatronData(df), "missing:")
+  expect_error(PneumatronData(df), "At least one required column is missing:")
+})
+
+test_that("Initialization fails wrong datetime format", {
+  df <- data.frame(
+    id = c(1, 1, 1, 1, 1),
+    measure = 1:5,
+    log_line = 1:5,
+    pressure = c(100, 40, 40.7, 41.5, 41.9),
+    datetime = c("2024-05-13 13:54:26", "2024-05-13 13:54:26", "2024-05-13 13:54:27", "2024-05-13 13:54:27", "2024-05-13 13:54:28")
+  )
+  expect_error(PneumatronData(df), "Column datetime must be a POSIXct")
 })
 
 test_that("Initialization fails with non-data.table/data.frame input", {
