@@ -34,6 +34,7 @@ read_format_v2 <- function(file_path) {
   ))
   # Adjust pressure from relative to absolute values
   data[, pressure := 101.325 - pressure]
+  data[, group := 0]
   return(data)
 }
 
@@ -45,6 +46,7 @@ read_format_v2_update <- function(file_path) {
   ))
   # Adjust pressure from relative to absolute values
   data[, pressure := 101.325 - pressure]
+  data[, group := 0]
   return(data)
 }
 
@@ -60,6 +62,7 @@ read_format_v3_old <- function(file_path) {
   data[, voltage := as.numeric(voltage)]
   # Clean up raw column
   data[, raw := NULL]
+  data[, group := 0]
   return(data[!is.na(datetime), ])
 }
 
@@ -90,6 +93,7 @@ read_format_v3 <- function(file_path) {
   )
   # Apply unit conversion to pressure
   data[, pressure := pressure / 10]
+  data[, group := 0]
   return(data)
 }
 

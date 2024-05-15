@@ -35,3 +35,21 @@ test_that("Initialization fails wrong datetime format", {
 test_that("Initialization fails with non-data.table/data.frame input", {
   expect_error(PneumatronData(data = 1:10), "Data must be a data.table, data.frame, or list")
 })
+
+test_that("Summary provides correct output for non-standard log pressure count", {
+  data <- open_pneumatron_data("data-examples/example-v2.csv", "V2")
+
+  expect_output(summary(data), "Pneumatron devices summary:")
+  expect_output(summary(data), "Measurements with non-standard log pressure count:")
+  expect_error(expect_output(summary(data), "Measurements that need to be checked:"))
+  expect_error(expect_output(summary(data), "Interruption Warnings:"))
+})
+
+test_that("Summary provides correct output for interruption warnings", {
+  data <- open_pneumatron_data("data-examples/example-v3.csv", "V3")
+
+  expect_output(summary(data), "Pneumatron devices summary:")
+  expect_output(summary(data), "Measurements with non-standard log pressure count:")
+  expect_error(expect_output(summary(data), "Measurements that need to be checked:"))
+  expect_output(summary(data), "Interruption Warnings:")
+})

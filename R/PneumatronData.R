@@ -17,7 +17,7 @@
 #'   datetime = as.POSIXct(c("2024-05-13 13:54:26", "2024-05-13 13:54:26", "2024-05-13 13:54:27", "2024-05-13 13:54:27", "2024-05-13 13:54:28"))
 #' )
 #' # Now, convert the data.frame to a PneumatronData object.
-#' pneumatron_data <- PneumatronData(df)
+#' pneumatron_data <- PneumatronData(data = df)
 #' print(pneumatron_data)
 #'
 #' @export
