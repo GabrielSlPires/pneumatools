@@ -83,6 +83,6 @@ setMethod("summary", "PneumatronData", function(object) {
     }
   }
 
-  #cat("\nRun pneumatron_data_diagnose() for a more complete report.\n")
+  # cat("\nRun pneumatron_data_diagnose() for a more complete report.\n")
   invisible(summary_stats)
 })
