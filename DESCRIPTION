@@ -8,8 +8,7 @@ Description: This package provides tools for analyzing Pneumatron data,
     useful in plant hydraulic studies. It includes functions for data
     processing and a user-friendly dashboard for interactive analysis,
     enabling users to perform complex analyses without needing to program.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Imports: 
     data.table,
     lubridate,
