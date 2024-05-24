@@ -2,6 +2,7 @@
 #'
 #' Reads Pneumatron measurement data from a CSV file using the specified data format.
 #' Defaults to format V4 if no format is specified.
+#'
 #' @param file_path The path to the CSV file.
 #' @param data_format The format of the data file ('V2', 'V2-update', 'V3', 'V3-old', 'V4').
 #' Defaults to 'V4'.
@@ -12,6 +13,9 @@
 #' }
 #' @export
 open_pneumatron_data <- function(file_path, data_format = "V4") {
+  if (!is.character(file_path) || length(file_path) != 1) {
+    stop("file_path must be a single character string.")
+  }
   if (!file.exists(file_path)) {
     stop("File not found: ", file_path)
   }

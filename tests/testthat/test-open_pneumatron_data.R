@@ -28,3 +28,8 @@ test_that("Unsupported format gives an error", {
 test_that("File not found gives an error", {
   expect_error(detect_data_format("nonexistent.csv"), "does not exist")
 })
+
+# Test open multiple files
+test_that("File not found gives an error", {
+  expect_error(open_pneumatron_data(c("data-examples/example-v2.csv", "data-examples/example-v3.csv")), "file_path must be a single character string")
+})
