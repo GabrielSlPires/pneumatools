@@ -15,6 +15,8 @@ start and end times for each Pneumatron device, and identifies measurements that
 to be checked or removed.
 }
 \examples{
+\dontrun{
 pneumatron_data <- PneumatronData(data = df)
 summary(pneumatron_data)
+}
 }

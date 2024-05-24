@@ -6,10 +6,22 @@
 #'
 #' @param object A PneumatronData object.
 #' @examples
+#' \dontrun{
 #' pneumatron_data <- PneumatronData(data = df)
 #' summary(pneumatron_data)
+#' }
 #' @export
 setMethod("summary", "PneumatronData", function(object) {
+  # Avoid 'no visible binding for global variable ...' by initializing to NULL
+  # https://github.com/Rdatatable/data.table/issues/850
+  . <- datetime <- .N <- id <- measure <- group <- NULL
+  start_time <- end_time <- next_start_time <- measurement_duration <- pressure_log_count <- NULL
+  time_between_measurements <- measurement_count <- NULL
+  good_measurement_count <- good_time_between_measurements_count <- NULL
+  device_start_time <- device_end_time <- NULL
+  bad_measurement_count <- device_end_time <- NULL
+  log_duration <- bad_time_between_measurements_count <- NULL
+
   # Calculate the minimum and maximum datetime for each ID
   summary_stats <- object@data[, .(
     start_time = min(datetime),
@@ -74,7 +86,7 @@ setMethod("summary", "PneumatronData", function(object) {
   # Print pneumatron interruptions
   interruptions <- summary_stats[time_between_measurements > 2000, .(
     id,
-    interruption_count = .N
+    count = .N
   ), by = id]
   if (nrow(interruptions) > 0) {
     cat("\nInterruption Warnings:\n")

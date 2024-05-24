@@ -11,9 +11,12 @@
 #'   Defaults to 1020 seconds (17 min).
 #' @return A data.table with the uptime information for each device.
 #' @examples
+#' \dontrun{
 #' data <- open_pneumatron_data("path/to/your/datafile.csv")
 #' uptime_summary <- reportUptime(pneumatron_data)
 #' print(uptime_summary)
+#' }
+#' @rdname reportUptime
 #' @export
 setGeneric(
   "reportUptime",
@@ -25,10 +28,17 @@ setGeneric(
   }
 )
 
+#' @rdname reportUptime
 #' @export
 setMethod(
   "reportUptime", "PneumatronData",
   function(object, lower_interval = 750, upper_interval = 1050) {
+    # Avoid 'no visible binding for global variable ...' by initializing to NULL
+    # https://github.com/Rdatatable/data.table/issues/850
+    . <- datetime <- .N <- id <- measure <- group <- NULL
+    start_time <- next_start_time <- time_between_measurements <- NULL
+    end_time <- interruption <- NULL
+
     summary_stats <- object@data[, .(
       start_time = min(datetime),
       end_time = max(datetime),

@@ -18,6 +18,3 @@ A vector of strings, where each string is a line from the file that matches the 
 Reads a Pneumatron measurement data file and filters out lines that do not match a specified regular expression pattern.
 This function is intended to clean corrupted data files by removing lines that are incorrectly formatted.
 }
-\examples{
-clean_file_path <- clean_corrupted_data("path/to/your/data.csv", "^(-?[0-9]+,){2}([0-9]+\\\\.[0-9]+,){6}([0-9]+,){3}[0-9]\\\\.[0-9]+,[0-9]{4}(-[0-9]+){2} [0-9]+(:[0-9]+){2}$")
-}

@@ -19,5 +19,7 @@ The function reads only the first row to determine the number of columns and che
 to infer the format version of the file.
 }
 \examples{
+\dontrun{
 format <- detect_data_format("path/to/your/datafile.csv")
+}
 }

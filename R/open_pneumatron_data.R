@@ -7,7 +7,9 @@
 #' Defaults to 'V4'.
 #' @return An object of class PneumatronData.
 #' @examples
+#' \dontrun{
 #' pneumatron_data <- open_pneumatron_data("path/to/your/datafile.csv", data_format = "V4")
+#' }
 #' @export
 open_pneumatron_data <- function(file_path, data_format = "V4") {
   if (!file.exists(file_path)) {
@@ -34,15 +36,16 @@ open_pneumatron_data <- function(file_path, data_format = "V4") {
 #' @param file_path The path to the data file.
 #' @param allowed_regex The regular expression pattern that valid lines must match.
 #' @return A vector of strings, where each string is a line from the file that matches the allowed regular expression.
-#' @examples
-#' clean_file_path <- clean_corrupted_data("path/to/your/data.csv", "^(-?[0-9]+,){2}([0-9]+\\.[0-9]+,){6}([0-9]+,){3}[0-9]\\.[0-9]+,[0-9]{4}(-[0-9]+){2} [0-9]+(:[0-9]+){2}$")
-#' @export
 clean_corrupted_data <- function(file_path, allowed_regex) {
+  if (!file.exists(file_path)) {
+    stop("The specified file does not exist: ", file_path)
+  }
+
   con <- file(file_path, "r")
   lines_from_file <- readLines(con)
   close(con)
 
-  matched_lines <- stringr::str_detect(lines_from_file, allowed_regex)
+  matched_lines <- grepl(allowed_regex, lines_from_file)
 
   if (sum(!matched_lines) > 0) {
     message("\nRemoved ", sum(!matched_lines), " line(s) with different format than expected")
@@ -61,7 +64,9 @@ clean_corrupted_data <- function(file_path, allowed_regex) {
 #' @return A character string indicating the detected data format ('V2', 'V2-update', 'V3', 'V3-old', 'V4').
 #' If the format cannot be detected or is unsupported, the function will stop with an error message.
 #' @examples
+#' \dontrun{
 #' format <- detect_data_format("path/to/your/datafile.csv")
+#' }
 #' @export
 detect_data_format <- function(file_path) {
   # Some files had a rownames column

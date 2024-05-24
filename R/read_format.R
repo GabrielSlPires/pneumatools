@@ -16,13 +16,12 @@
 #'
 #' Each function adapts to the specifics of the data format version it is designed to read, handling key data fields,
 #' converting data types, and applying specific data cleaning procedures as necessary.
-#' @examples
-#' data <- read_format_v4("path/to/your/data.csv")
-#' @name data-readers
-
 #' @rdname data-readers
-#' @export
 read_format_v2 <- function(file_path) {
+  # Avoid 'no visible binding for global variable ...' by initializing to NULL
+  # https://github.com/Rdatatable/data.table/issues/850
+  pressure <- group <- NULL
+
   # Some files had a rownames column
   preview <- data.table::fread(file_path, nrows = 1)
   col_index <- if (names(preview)[1] == "V1") 2:19 else 1:18
@@ -39,8 +38,11 @@ read_format_v2 <- function(file_path) {
 }
 
 #' @rdname data-readers
-#' @export
 read_format_v2_update <- function(file_path) {
+  # Avoid 'no visible binding for global variable ...' by initializing to NULL
+  # https://github.com/Rdatatable/data.table/issues/850
+  pressure <- group <- NULL
+
   data <- data.table::fread(file_path, blank.lines.skip = TRUE, select = 1:6, col.names = c(
     "id", "seq", "measure", "log_line", "pressure", "datetime"
   ))
@@ -51,12 +53,15 @@ read_format_v2_update <- function(file_path) {
 }
 
 #' @rdname data-readers
-#' @export
 read_format_v3_old <- function(file_path) {
+  # Avoid 'no visible binding for global variable ...' by initializing to NULL
+  # https://github.com/Rdatatable/data.table/issues/850
+  datetime <- voltage <- raw <- group <- NULL
+
   data <- data.table::fread(file_path, blank.lines.skip = TRUE, header = FALSE, select = c(1, 2), col.names = c("raw", "datetime"))
   # Parse raw data into structured columns
   data[, c("id", "ms", "temp1", "pressure", "humid1", "temp2", "atm_pres2", "humid2", "seq", "measure", "log_line", "voltage") :=
-    tstrsplit(raw, ",", fixed = TRUE)]
+    data.table::tstrsplit(raw, ",", fixed = TRUE)]
   # Convert strings to appropriate data types
   data[, datetime := lubridate::ymd_hms(datetime)]
   data[, voltage := as.numeric(voltage)]
@@ -67,8 +72,11 @@ read_format_v3_old <- function(file_path) {
 }
 
 #' @rdname data-readers
-#' @export
 read_format_v3 <- function(file_path) {
+  # Avoid 'no visible binding for global variable ...' by initializing to NULL
+  # https://github.com/Rdatatable/data.table/issues/850
+  pressure <- group <- NULL
+
   allowed_regex <- "^(-?[0-9]+,){2}([0-9]+\\.[0-9]+,){6}([0-9]+,){3}[0-9]\\.[0-9]+,[0-9]{4}(-[0-9]+){2} [0-9]+(:[0-9]+){2}"
   data <- tryCatch(
     {
@@ -98,7 +106,6 @@ read_format_v3 <- function(file_path) {
 }
 
 #' @rdname data-readers
-#' @export
 read_format_v4 <- function(file_path) {
   allowed_regex <- "^(-?[0-9]+,){5}(([0-9]+\\.[0-9]+,){4}v3),[0-9]{4}(-[0-9]+){2} [0-9]+(:[0-9]+){2}"
   data <- tryCatch(

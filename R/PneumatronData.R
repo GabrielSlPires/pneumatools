@@ -3,25 +3,32 @@
 #' This class is designed for managing large datasets from Pneumatron devices efficiently.
 #' It utilizes `data.table` for data manipulation, ensuring fast processing and easy handling of data.
 #'
+#' @importFrom methods setClass
+#' @importFrom methods new
+#' @importFrom data.table :=
 #' @slot data data.table, represents the data stored in a data.table.
 #' @slot file_path Character vector, represents the file path for the data file.
 #' @slot data_format Character vector, specifies the Pneumatron data format of the data (e.g., V2, V3, V4).
 #' @examples
-#' # To convert a data.frame to PneumatronData, first ensure your data.frame includes
+#' # To create PneumatronData object, first ensure your data.frame includes
 #' # the required columns: id, measure, log_line, pressure, and datetime. Here's an example:
 #' df <- data.frame(
 #'   id = c(1, 1, 1, 1, 1),
 #'   measure = c(1, 2, 3, 4, 5),
 #'   log_line = c(1, 2, 3, 4, 5),
 #'   pressure = c(100, 40, 40.7, 41.5, 41.9),
-#'   datetime = as.POSIXct(c("2024-05-13 13:54:26", "2024-05-13 13:54:26", "2024-05-13 13:54:27", "2024-05-13 13:54:27", "2024-05-13 13:54:28"))
+#'   datetime = as.POSIXct(c(
+#'     "2024-05-13 13:54:26",
+#'     "2024-05-13 13:54:26",
+#'     "2024-05-13 13:54:27",
+#'     "2024-05-13 13:54:27",
+#'     "2024-05-13 13:54:28"
+#'   ))
 #' )
-#' # Now, convert the data.frame to a PneumatronData object.
-#' pneumatron_data <- PneumatronData(data = df)
-#' print(pneumatron_data)
-#'
-#' @export
-PneumatronData <- setClass(
+#' # Now, create the PneumatronData object.
+#' pneumatron_data <- PneumatronData(data = df, file_path = "file_path", data_format = "data_format")
+#' @rdname pneumatron_data
+setClass(
   Class = "PneumatronData",
   slots = c(
     data = "data.table",
@@ -29,6 +36,15 @@ PneumatronData <- setClass(
     data_format = "character"
   )
 )
+
+#' @rdname pneumatron_data
+#' @param data data.table, represents the data stored in a data.table.
+#' @param file_path Character vector, represents the file path for the data file.
+#' @param data_format Character vector, specifies the Pneumatron data format of the data (e.g., V2, V3, V4).
+#' @export
+PneumatronData <- function(data, file_path = NA_character_, data_format = NA_character_) {
+  new("PneumatronData", data = data, file_path = file_path, data_format = data_format)
+}
 
 setMethod("initialize", "PneumatronData", function(.Object, data, file_path = NA_character_, data_format = NA_character_, ...) {
   # Ensure input data is a data.table
@@ -57,3 +73,8 @@ setMethod("initialize", "PneumatronData", function(.Object, data, file_path = NA
 
   return(.Object)
 })
+
+# setGeneric("name", function(x) standardGeneric("name"))
+# setMethod("name", "Person", function(x) x@name)
+#
+# data

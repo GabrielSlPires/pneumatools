@@ -20,5 +20,7 @@ Reads Pneumatron measurement data from a CSV file using the specified data forma
 Defaults to format V4 if no format is specified.
 }
 \examples{
+\dontrun{
 pneumatron_data <- open_pneumatron_data("path/to/your/datafile.csv", data_format = "V4")
+}
 }
