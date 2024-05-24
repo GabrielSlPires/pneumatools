@@ -5,25 +5,25 @@
 \alias{reportUptime,PneumatronData-method}
 \title{Report Uptime for Pneumatron Devices}
 \usage{
-reportUptime(object, lower_interval = 750, upper_interval = 1050)
+reportUptime(object, lower_interval = 780, upper_interval = 1020)
 
-\S4method{reportUptime}{PneumatronData}(object, lower_interval = 750, upper_interval = 1050)
+\S4method{reportUptime}{PneumatronData}(object, lower_interval = 780, upper_interval = 1020)
 }
 \arguments{
 \item{object}{A PneumatronData object.}
 
-\item{lower_interval}{The expected interval between measurements in seconds.
+\item{lower_interval}{The expected lower interval between measurements in seconds.
 Defaults to 780 seconds (13 min).}
 
-\item{upper_interval}{The expected interval between measurements in seconds.
+\item{upper_interval}{The expected upper interval between measurements in seconds.
 Defaults to 1020 seconds (17 min).}
 }
 \value{
 A data.table with the uptime information for each device.
 }
 \description{
-A generic function to reports the continuous uptime for each Pneumatron
-device, considering measurements made at a specified interval (e.g. 15min).
+A generic function to report the continuous uptime for each Pneumatron
+device, considering measurements made at a specified interval (e.g., 15 min).
 Any gap exceeding the interval is considered as downtime.
 }
 \examples{
