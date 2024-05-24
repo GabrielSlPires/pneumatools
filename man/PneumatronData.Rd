@@ -30,7 +30,7 @@ It utilizes \code{data.table} for data manipulation, ensuring fast processing an
 }}
 
 \examples{
-# To create PneumatronData object, first ensure your data.frame includes
+# To create a PneumatronData object, first ensure your data.frame includes
 # the required columns: id, measure, log_line, pressure, and datetime. Here's an example:
 df <- data.frame(
   id = c(1, 1, 1, 1, 1),
