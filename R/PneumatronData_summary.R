@@ -1,17 +1,17 @@
-#' Summary method for PneumatronData
+#' Summary method for PneumatronDatabase
 #'
-#' Provides a summary of the PneumatronData object, including the number of measurements,
+#' Provides a summary of the PneumatronDatabase object, including the number of measurements,
 #' start and end times for each Pneumatron device, and identifies measurements that need
 #' to be checked or removed.
 #'
-#' @param object A PneumatronData object.
+#' @param object A PneumatronDatabase object.
 #' @examples
 #' \dontrun{
-#' pneumatron_data <- PneumatronData(data = df)
-#' summary(pneumatron_data)
+#' database <- open_pneumatron_database("path/to/your/datafile.csv", data_format = "V4")
+#' summary(database)
 #' }
 #' @export
-setMethod("summary", "PneumatronData", function(object) {
+setMethod("summary", "PneumatronDatabase", function(object) {
   # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
   # Reference: https://github.com/Rdatatable/data.table/issues/850
   . <- datetime <- .N <- id <- measure <- group <- start_time <- next_start_time <- time_between_measurements <- end_time <- interruption <-

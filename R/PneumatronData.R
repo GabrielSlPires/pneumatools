@@ -1,4 +1,4 @@
-#' Class PneumatronData
+#' Class PneumatronDatabase
 #'
 #' This class is designed for managing large datasets from Pneumatron devices efficiently.
 #' It utilizes `data.table` for data manipulation, ensuring fast processing and easy handling of data.
@@ -8,9 +8,9 @@
 #' @slot data data.table, represents the data stored in a data.table.
 #' @slot file_path Character vector, represents the file path for the data file.
 #' @slot data_format Character vector, specifies the Pneumatron data format of the data (e.g., V2, V3, V4).
-#' @rdname PneumatronData
+#' @rdname PneumatronDatabase
 setClass(
-  Class = "PneumatronData",
+  Class = "PneumatronDatabase",
   slots = c(
     data = "data.table",
     file_path = "character",
@@ -18,15 +18,15 @@ setClass(
   )
 )
 
-#' @rdname PneumatronData
+#' @rdname PneumatronDatabase
 #' @param data data.table, represents the data stored in a data.table.
 #' @param file_path Character vector, represents the file path for the data file.
 #' @param data_format Character vector, specifies the Pneumatron data format of the data (e.g., V2, V3, V4).
-PneumatronData <- function(data, file_path = NA_character_, data_format = NA_character_) {
-  new("PneumatronData", data = data, file_path = file_path, data_format = data_format)
+PneumatronDatabase <- function(data, file_path = NA_character_, data_format = NA_character_) {
+  new("PneumatronDatabase", data = data, file_path = file_path, data_format = data_format)
 }
 
-setMethod("initialize", "PneumatronData", function(.Object, data, file_path = NA_character_, data_format = NA_character_, ...) {
+setMethod("initialize", "PneumatronDatabase", function(.Object, data, file_path = NA_character_, data_format = NA_character_, ...) {
   # Ensure input data is a data.table
   if (!inherits(data, "data.table")) {
     if (is.data.frame(data)) {
@@ -54,15 +54,15 @@ setMethod("initialize", "PneumatronData", function(.Object, data, file_path = NA
   return(.Object)
 })
 
-#' Get data from PneumatronData object
+#' Get data from PneumatronDatabase object
 #'
-#' This method retrieves the data stored in a PneumatronData object.
+#' This method retrieves the data stored in a PneumatronDatabase object.
 #'
-#' @param x A PneumatronData object.
-#' @return A data.table containing the data stored in the PneumatronData object.
+#' @param x A PneumatronDatabase object.
+#' @return A data.table containing the data stored in the PneumatronDatabase object.
 #' @examples
 #' \dontrun{
-#' database <- open_pneumatron_data("path/to/your/datafile.csv")
+#' database <- open_pneumatron_database("path/to/your/datafile.csv")
 #' data <- get_data(data)
 #' }
 #' @rdname get_data
@@ -70,5 +70,5 @@ setMethod("initialize", "PneumatronData", function(.Object, data, file_path = NA
 setGeneric("get_data", function(x) standardGeneric("get_data"))
 #' @rdname get_data
 #' @export
-setMethod("get_data", "PneumatronData", function(x) x@data)
+setMethod("get_data", "PneumatronDatabase", function(x) x@data)
 

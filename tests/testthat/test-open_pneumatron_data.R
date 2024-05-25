@@ -1,12 +1,12 @@
-# Tests for open_pneumatron_data function
-test_that("open_pneumatron_data handles invalid file path", {
-  expect_error(open_pneumatron_data("nonexistent.csv", "V4"))
+# Tests for open_pneumatron_database function
+test_that("open_pneumatron_database handles invalid file path", {
+  expect_error(open_pneumatron_database("nonexistent.csv", "V4"))
 })
 
-test_that("open_pneumatron_data handles main formats correctly", {
-  expect_s4_class(open_pneumatron_data("data-examples/example-v4.csv", "V4"), "PneumatronData")
-  expect_s4_class(open_pneumatron_data("data-examples/example-v3.csv", "V3"), "PneumatronData")
-  expect_s4_class(open_pneumatron_data("data-examples/example-v2.csv", "V2"), "PneumatronData")
+test_that("open_pneumatron_database handles main formats correctly", {
+  expect_s4_class(open_pneumatron_database("data-examples/example-v4.csv", "V4"), "PneumatronDatabase")
+  expect_s4_class(open_pneumatron_database("data-examples/example-v3.csv", "V3"), "PneumatronDatabase")
+  expect_s4_class(open_pneumatron_database("data-examples/example-v2.csv", "V2"), "PneumatronDatabase")
 })
 
 # Test correct format detection
@@ -31,5 +31,5 @@ test_that("File not found gives an error", {
 
 # Test open multiple files
 test_that("File not found gives an error", {
-  expect_error(open_pneumatron_data(c("data-examples/example-v2.csv", "data-examples/example-v3.csv")), "file_path must be a single character string")
+  expect_error(open_pneumatron_database(c("data-examples/example-v2.csv", "data-examples/example-v3.csv")), "file_path must be a single character string")
 })

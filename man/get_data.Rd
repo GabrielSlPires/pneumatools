@@ -2,25 +2,25 @@
 % Please edit documentation in R/PneumatronData.R
 \name{get_data}
 \alias{get_data}
-\alias{get_data,PneumatronData-method}
-\title{Get data from PneumatronData object}
+\alias{get_data,PneumatronDatabase-method}
+\title{Get data from PneumatronDatabase object}
 \usage{
 get_data(x)
 
-\S4method{get_data}{PneumatronData}(x)
+\S4method{get_data}{PneumatronDatabase}(x)
 }
 \arguments{
-\item{x}{A PneumatronData object.}
+\item{x}{A PneumatronDatabase object.}
 }
 \value{
-A data.table containing the data stored in the PneumatronData object.
+A data.table containing the data stored in the PneumatronDatabase object.
 }
 \description{
-This method retrieves the data stored in a PneumatronData object.
+This method retrieves the data stored in a PneumatronDatabase object.
 }
 \examples{
 \dontrun{
-pneumatron_data <- PneumatronData(data = df)
-data <- get_data(pneumatron_data)
+database <- open_pneumatron_database("path/to/your/datafile.csv")
+data <- get_data(data)
 }
 }

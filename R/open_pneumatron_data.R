@@ -6,13 +6,13 @@
 #' @param file_path The path to the CSV file.
 #' @param data_format The format of the data file ('V2', 'V2-update', 'V3', 'V3-old', 'V4').
 #' Defaults to 'V4'.
-#' @return An object of class PneumatronData.
+#' @return An object of class PneumatronDatabase.
 #' @examples
 #' \dontrun{
-#' pneumatron_data <- open_pneumatron_data("path/to/your/datafile.csv", data_format = "V4")
+#' database <- open_pneumatron_database("path/to/your/datafile.csv", data_format = "V4")
 #' }
 #' @export
-open_pneumatron_data <- function(file_path, data_format = "V4") {
+open_pneumatron_database <- function(file_path, data_format = "V4") {
   if (!is.character(file_path) || length(file_path) != 1) {
     stop("file_path must be a single character string.")
   }
@@ -29,7 +29,7 @@ open_pneumatron_data <- function(file_path, data_format = "V4") {
     stop("Unsupported data format provided")
   )
 
-  PneumatronData(data, file_path = file_path, data_format = data_format)
+  PneumatronDatabase(data, file_path = file_path, data_format = data_format)
 }
 
 #' Clean Corrupted Data

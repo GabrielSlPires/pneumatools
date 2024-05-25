@@ -4,7 +4,7 @@
 #' device, considering measurements made at a specified interval (e.g., 15 min).
 #' Any gap exceeding the interval is considered as downtime.
 #'
-#' @param object A PneumatronData object.
+#' @param object A PneumatronDatabase object.
 #' @param lower_interval The expected lower interval between measurements in seconds.
 #'   Defaults to 780 seconds (13 min).
 #' @param upper_interval The expected upper interval between measurements in seconds.
@@ -12,8 +12,8 @@
 #' @return A data.table with the uptime information for each device.
 #' @examples
 #' \dontrun{
-#' data <- open_pneumatron_data("path/to/your/datafile.csv")
-#' uptime_summary <- reportUptime(pneumatron_data)
+#' database <- open_pneumatron_database("path/to/your/datafile.csv")
+#' uptime_summary <- reportUptime(database)
 #' print(uptime_summary)
 #' }
 #' @rdname reportUptime
@@ -28,7 +28,7 @@ setGeneric(
 #' @rdname reportUptime
 #' @export
 setMethod(
-  "reportUptime", "PneumatronData",
+  "reportUptime", "PneumatronDatabase",
   function(object, lower_interval = 780, upper_interval = 1020) {
     # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
     # Reference: https://github.com/Rdatatable/data.table/issues/850

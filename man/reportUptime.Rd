@@ -2,15 +2,15 @@
 % Please edit documentation in R/PneumatronData_reportUptime.R
 \name{reportUptime}
 \alias{reportUptime}
-\alias{reportUptime,PneumatronData-method}
+\alias{reportUptime,PneumatronDatabase-method}
 \title{Report Uptime for Pneumatron Devices}
 \usage{
 reportUptime(object, lower_interval = 780, upper_interval = 1020)
 
-\S4method{reportUptime}{PneumatronData}(object, lower_interval = 780, upper_interval = 1020)
+\S4method{reportUptime}{PneumatronDatabase}(object, lower_interval = 780, upper_interval = 1020)
 }
 \arguments{
-\item{object}{A PneumatronData object.}
+\item{object}{A PneumatronDatabase object.}
 
 \item{lower_interval}{The expected lower interval between measurements in seconds.
 Defaults to 780 seconds (13 min).}
@@ -28,8 +28,8 @@ Any gap exceeding the interval is considered as downtime.
 }
 \examples{
 \dontrun{
-data <- open_pneumatron_data("path/to/your/datafile.csv")
-uptime_summary <- reportUptime(pneumatron_data)
+database <- open_pneumatron_database("path/to/your/datafile.csv")
+uptime_summary <- reportUptime(database)
 print(uptime_summary)
 }
 }
