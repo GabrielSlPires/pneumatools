@@ -62,8 +62,8 @@ setMethod("initialize", "PneumatronData", function(.Object, data, file_path = NA
 #' @return A data.table containing the data stored in the PneumatronData object.
 #' @examples
 #' \dontrun{
-#' pneumatron_data <- PneumatronData(data = df)
-#' data <- get_data(pneumatron_data)
+#' database <- open_pneumatron_data("path/to/your/datafile.csv")
+#' data <- get_data(data)
 #' }
 #' @rdname get_data
 #' @export

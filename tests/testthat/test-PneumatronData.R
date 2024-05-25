@@ -53,3 +53,14 @@ test_that("Summary provides correct output for interruption warnings", {
   expect_error(expect_output(summary(data), "Measurements that need to be checked:"))
   expect_output(summary(data), "Interruption Warnings:")
 })
+
+test_that("get_data provides correct output", {
+  database <- open_pneumatron_data("data-examples/example-v4.csv")
+  data <- get_data(database)
+
+  expect_s3_class(data, "data.table")
+})
+
+test_that("get_data only works with PneumatronData", {
+  expect_error(get_data("database"), "unable to find an inherited method")
+})
