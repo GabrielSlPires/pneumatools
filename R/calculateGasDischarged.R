@@ -27,7 +27,8 @@ setGeneric("calculateGasDischarged", function(object, pressure_interval = 15, re
 setMethod("calculateGasDischarged", "PneumatronDatabase", function(object, pressure_interval = 15, reservoir = 2.6, p_atm = 101.3, fixed_p_atm = TRUE, temp = 25, fixed_temp = TRUE,  R = 8.3144621) {
   # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
   # Reference: https://github.com/Rdatatable/data.table/issues/850
-  pi <- pf <- temp1 <- pressure_diff <- gd_mol <- NULL
+  p_atm_calc <- sensor_p_atm <- temp_calc <- sensor_temp <- pi <- pf <- temp1 <-
+    pressure_diff <- gd_mol <- gd_ul <- n_mol <- NULL
 
   reservoir_volume <- reservoir * 10^-6
   data <- get_data(object)
@@ -72,7 +73,8 @@ setMethod("calculateGasDischarged", "PneumatronDatabase", function(object, press
 prepare_data_for_gas_discharged <- function(data, pressure_interval) {
   # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
   # Reference: https://github.com/Rdatatable/data.table/issues/850
-  . <- datetime <- log_line <- temp1 <- .N <- pressure <- id <- measure <- group <- NULL
+  log_line_count <- .N <- id <- measure <- group <- version <- . <- datetime <-
+    log_line <- temp1 <- pressure <- NULL
 
   # filter gas discharged measurements with less than required pressure logs
   data[, log_line_count := .N, by = list(id, measure, group, version)]
