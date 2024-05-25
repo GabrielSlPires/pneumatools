@@ -63,7 +63,7 @@ setMethod("initialize", "PneumatronDatabase", function(.Object, data, file_path 
 #' @examples
 #' \dontrun{
 #' database <- open_pneumatron_database("path/to/your/datafile.csv")
-#' data <- get_data(data)
+#' data <- get_data(database)
 #' }
 #' @rdname get_data
 #' @export

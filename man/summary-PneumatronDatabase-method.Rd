@@ -16,7 +16,7 @@ to be checked or removed.
 }
 \examples{
 \dontrun{
-pneumatron_database <- PneumatronDatabase(data = df)
-summary(pneumatron_database)
+database <- open_pneumatron_database("path/to/your/datafile.csv", data_format = "V4")
+summary(database)
 }
 }

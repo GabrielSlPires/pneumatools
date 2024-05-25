@@ -21,6 +21,6 @@ Defaults to format V4 if no format is specified.
 }
 \examples{
 \dontrun{
-pneumatron_database <- open_pneumatron_database("path/to/your/datafile.csv", data_format = "V4")
+database <- open_pneumatron_database("path/to/your/datafile.csv", data_format = "V4")
 }
 }
