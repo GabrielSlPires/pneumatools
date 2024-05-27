@@ -3,12 +3,11 @@ test_that("reportUptime handles intervals within limits correctly", {
   database <- open_pneumatron_database("data-examples/example-v4.csv")
 
   result <- reportUptime(database)
-  expect_equal(nrow(result), 200)
-  expect_true(sum(result$duration > 0) == 192)
+  expect_equal(nrow(result), 10)
 
-  result <- reportUptime(database, lower_interval = 1800, upper_interval = 2020)
-  expect_equal(nrow(result), 21)
-  expect_equal(sum(result$duration > 0), 19)
+  result <- reportUptime(database, interval = 960)
+  expect_equal(nrow(result), 171)
+  expect_equal(sum(result$duration > 0), 170)
 })
 
 test_that("reportUptime works only with PneumatronDatabase class", {

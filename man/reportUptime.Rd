@@ -5,17 +5,14 @@
 \alias{reportUptime,PneumatronDatabase-method}
 \title{Report Uptime for Pneumatron Devices}
 \usage{
-reportUptime(object, lower_interval = 780, upper_interval = 1020)
+reportUptime(object, interval = 1020)
 
-\S4method{reportUptime}{PneumatronDatabase}(object, lower_interval = 780, upper_interval = 1020)
+\S4method{reportUptime}{PneumatronDatabase}(object, interval = 1020)
 }
 \arguments{
 \item{object}{A PneumatronDatabase object.}
 
-\item{lower_interval}{The expected lower interval between measurements in seconds.
-Defaults to 780 seconds (13 min).}
-
-\item{upper_interval}{The expected upper interval between measurements in seconds.
+\item{interval}{The expected interval between measurements in seconds.
 Defaults to 1020 seconds (17 min).}
 }
 \value{
