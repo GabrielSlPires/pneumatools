@@ -20,9 +20,7 @@
 #' @export
 setGeneric(
   "reportUptime",
-  function(object, lower_interval = 780, upper_interval = 1020) {
-    standardGeneric("reportUptime")
-  }
+  function(object, lower_interval = 780, upper_interval = 1020) standardGeneric("reportUptime")
 )
 
 #' @rdname reportUptime
