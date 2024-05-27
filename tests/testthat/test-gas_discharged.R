@@ -29,7 +29,6 @@ test_that("GasDischarged class throws error with missing required columns", {
 
 test_that("calculateGasDischarged calculates correctly with valid data", {
   database <- open_pneumatron_database("data-examples/example-v4.csv")
-
   gas_discharged <- calculateGasDischarged(database)
 
   expect_s4_class(gas_discharged, "GasDischarged")
@@ -38,9 +37,7 @@ test_that("calculateGasDischarged calculates correctly with valid data", {
 
 test_that("calculateGasDischarged handles fixed atmospheric pressure correctly", {
   database <- open_pneumatron_database("data-examples/example-v4.csv")
-
   gas_discharged <- calculateGasDischarged(database, fixed_p_atm = FALSE)
-
   expect_s4_class(gas_discharged, "GasDischarged")
   expect_true("gd_ul" %in% names(gas_discharged@data))
 })
@@ -48,7 +45,6 @@ test_that("calculateGasDischarged handles fixed atmospheric pressure correctly",
 test_that("calculateGasDischarged handles fixed temperature correctly", {
   database <- open_pneumatron_database("data-examples/example-v4.csv")
   gas_discharged <- calculateGasDischarged(database, fixed_temp = FALSE)
-
   expect_s4_class(gas_discharged, "GasDischarged")
   expect_true("gd_ul" %in% names(gas_discharged@data))
 })
