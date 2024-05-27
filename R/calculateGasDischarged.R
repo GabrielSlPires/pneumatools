@@ -73,13 +73,18 @@ setMethod("calculateGasDischarged", "PneumatronDatabase", function(object, press
 prepare_data_for_gas_discharged <- function(data, pressure_interval) {
   # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
   # Reference: https://github.com/Rdatatable/data.table/issues/850
-  log_line_count <- .N <- id <- measure <- group <- version <- . <- datetime <-
+  log_line_count <- .N <- id <- measure <- group <- . <- datetime <-
     log_line <- temp1 <- pressure <- NULL
 
   # filter gas discharged measurements with less than required pressure logs
-  data[, log_line_count := .N, by = list(id, measure, group, version)]
+  data <- data[!is.na(id)]
+  data <- data[!is.na(measure)]
+  data <- data[!is.na(group)]
+  data <- data[!is.na(pressure)]
+  data[, log_line_count := .N, by = list(id, measure, group)]
+  data <- data[log_line_count >= pressure_interval*2]
 
-  data_prepared <- data[log_line_count >= pressure_interval*2, .(
+  data_prepared <- data[, .(
     datetime = datetime[which(log_line == 1)],
     sensor_temp = temp1[which(log_line == 1)],
     sensor_p_atm = pressure[which(log_line == 1)],
@@ -88,7 +93,7 @@ prepare_data_for_gas_discharged <- function(data, pressure_interval) {
     # pi = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure) + 1)))], # test difference with and without +1
     pi = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure))))],
     pf = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure) + pressure_interval*2)))]
-  ), by = list(id, measure, group, version)] # I used to have a grouping by day
+  ), by = list(id, measure, group)] # I used to have a grouping by day
 
   return(data_prepared)
 }
@@ -106,11 +111,12 @@ initial_pressure <- function(log_line, pressure) {
   if (length(log_line) != length(pressure)) return(NA)
   if (length(log_line) < 10) return(NA)
 
+  dt <- data.table::data.table(log_line = log_line, pressure = pressure)
+
   initial_p_log <- tryCatch({
-    max(
-      log_line[which(pressure == min(pressure[which(log_line < 7)], na.rm = TRUE))],
-      na.rm = TRUE
-    )
+    dt <- dt[log_line < 7]
+    dt <- dt[pressure == min(pressure, na.rm = TRUE)]
+    max(dt$log_line, na.rm = TRUE)
   },
   error = function(e) 3,
   warning = function(w) 3)
