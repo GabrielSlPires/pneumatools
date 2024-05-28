@@ -91,3 +91,76 @@ detect_data_format <- function(file_path) {
     stop("Unsupported data format provided")
   }
 }
+
+#' Open Mult-Pneumatron Data from File
+#'
+#' Reads Pneumatron measurement data from Mult-Pneumatron file format and
+#' convert to the standard format of this package.
+#'
+#' @param files_path The path to the CSV files.
+#' @param ids The 'pneumatron id' of each file. Must be the same size as file_path.
+#' @param vld if you are working with VLD mark as TRUE. Defaut is FALSE
+#' @param datetime_format It will be passed for `as.POSIXct` format. Default = "%y/%m/%d %H:%M"
+#'
+#' @return An object of class PneumatronDatabase.
+#' @details
+#' The 'pneumatron id' specified in 'ids' will be used to merge water potential data.
+#'
+#' @examples
+#' \dontrun{
+#' database <- open_pneumatron_mult_database(c("sample_1.csv", "sample_2.csv"), ids = c(1,2))
+#' }
+#' @export
+open_pneumatron_mult_database <- function(files_path, ids, vld = FALSE, datetime_format = "%y/%m/%d %H:%M") {
+  # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
+  # Reference: https://github.com/Rdatatable/data.table/issues/850
+  measure <- status <- datetime <- datatime <- time <- id <- .SD <- . <- NULL
+
+  if (length(files_path) != length(ids)) {
+    stop("Arguments 'files' and 'ids' must have the same size.")
+  }
+  required_colnames <- c("time", "pressure", "status", "datatime")
+
+  data_list <- vector("list", length(files_path))
+  for (i in seq_along(files_path)) {
+    current_data <- data.table::fread(files_path[i])
+
+    if (!setequal(required_colnames, colnames(current_data))) {
+      stop("Colnames must be time, pressure, status, datatime")
+    }
+
+    current_data$measure <- 0
+    cycle <- 0
+
+    current_data[, measure := cumsum(status == "START")]
+    current_data[, datetime := as.POSIXct(datatime, format = datetime_format)[1] + time/1000, by = measure]
+    current_data[, log_line := time %/% 500 + 1]
+    current_data[, id := ids[i]]
+    # .SD[1] pode ser usado como across(everything(), first)
+    current_data <- current_data[, .SD[1], by = .(measure, log_line)]
+    current_data[, c("status", "datatime") := NULL]
+
+    data_list[[i]] <- current_data
+  }
+
+  data <- do.call(rbind, data_list)
+
+  data$pressure <- data$pressure/1000
+  data$group <- 0
+  data$seq <- 0
+  data$humid <- 0
+  data$temp1 <- 0
+  data$volt <- 0
+  data$version <- "M"
+
+  if (!vld) {
+    data <- data[log_line < 120]
+  }
+
+  PneumatronDatabase(
+    data,
+    file_path = files_path,
+    #file_path = paste0("c('", paste(samples, collapse = "','", sep = ","), "')"),
+    data_format = "Mult"
+  )
+}
