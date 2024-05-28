@@ -111,12 +111,9 @@ initial_pressure <- function(log_line, pressure) {
   if (length(log_line) != length(pressure)) return(NA)
   if (length(log_line) < 10) return(NA)
 
-  dt <- data.table::data.table(log_line = log_line, pressure = pressure)
-
   initial_p_log <- tryCatch({
-    dt <- dt[log_line < 7]
-    dt <- dt[pressure == min(pressure, na.rm = TRUE)]
-    max(dt$log_line, na.rm = TRUE)
+    log_index <- which.min(pressure[1:7])
+    log_line[log_index]
   },
   error = function(e) 3,
   warning = function(w) 3)
