@@ -12,23 +12,23 @@ open_pneumatron_mult_database(
 )
 }
 \arguments{
-\item{files_path}{The path to the CSV files.}
+\item{files_path}{A character vector containing the paths to the CSV files.}
 
-\item{ids}{The 'pneumatron id' of each file. Must be the same size as file_path.}
+\item{ids}{A numeric vector of 'pneumatron id' corresponding to each file. Must be the same length as files_path.}
 
-\item{vld}{if you are working with VLD mark as TRUE. Defaut is FALSE}
+\item{vld}{Logical indicating if you are working with VLD. Default is FALSE.}
 
-\item{datetime_format}{It will be passed for \code{as.POSIXct} format. Default = "\%y/\%m/\%d \%H:\%M"}
+\item{datetime_format}{A character string specifying the date-time format to be passed to as.POSIXct. Default is "\%y/\%m/\%d \%H:\%M".}
 }
 \value{
 An object of class PneumatronDatabase.
 }
 \description{
 Reads Pneumatron measurement data from Mult-Pneumatron file format and
-convert to the standard format of this package.
+converts it to the standard format of this package.
 }
 \details{
-The 'pneumatron id' specified in 'ids' will be used to merge water potential data.
+The 'pneumatron id' specified in ids will be used to merge water potential data.
 }
 \examples{
 \dontrun{
