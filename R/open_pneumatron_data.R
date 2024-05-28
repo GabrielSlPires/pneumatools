@@ -114,7 +114,7 @@ detect_data_format <- function(file_path) {
 open_pneumatron_mult_database <- function(files_path, ids, vld = FALSE, datetime_format = "%y/%m/%d %H:%M") {
   # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
   # Reference: https://github.com/Rdatatable/data.table/issues/850
-  measure <- status <- datetime <- datatime <- time <- id <- .SD <- . <- NULL
+  measure <- status <- datetime <- datatime <- time <- id <- .SD <- . <- log_line <- NULL
 
   if (length(files_path) != length(ids)) {
     stop("Arguments 'files' and 'ids' must have the same size.")

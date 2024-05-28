@@ -28,7 +28,8 @@ setMethod(
   function(object, interval = 1020) {
     # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
     # Reference: https://github.com/Rdatatable/data.table/issues/850
-    . <- datetime <- .N <- id <- measure <- group <- start_time <- next_start_time <- time_between_measurements <- end_time <- run_lenght <- interruption <- NULL
+    . <- datetime <- .N <- id <- measure <- group <- start_time <- next_start_time <-
+      time_between_measurements <- end_time <- run_lenght <- interruption <- n <- NULL
 
     summary_stats <- object@data[, .(
       start_time = min(datetime),
