@@ -95,16 +95,16 @@ detect_data_format <- function(file_path) {
 #' Open Mult-Pneumatron Data from File
 #'
 #' Reads Pneumatron measurement data from Mult-Pneumatron file format and
-#' convert to the standard format of this package.
+#' converts it to the standard format of this package.
 #'
-#' @param files_path The path to the CSV files.
-#' @param ids The 'pneumatron id' of each file. Must be the same size as file_path.
-#' @param vld if you are working with VLD mark as TRUE. Defaut is FALSE
-#' @param datetime_format It will be passed for `as.POSIXct` format. Default = "%y/%m/%d %H:%M"
+#' @param files_path A character vector containing the paths to the CSV files.
+#' @param ids A numeric vector of 'pneumatron id' corresponding to each file. Must be the same length as files_path.
+#' @param vld Logical indicating if you are working with VLD. Default is FALSE.
+#' @param datetime_format A character string specifying the date-time format to be passed to as.POSIXct. Default is "%y/%m/%d %H:%M".
 #'
 #' @return An object of class PneumatronDatabase.
 #' @details
-#' The 'pneumatron id' specified in 'ids' will be used to merge water potential data.
+#' The 'pneumatron id' specified in ids will be used to merge water potential data.
 #'
 #' @examples
 #' \dontrun{
@@ -160,7 +160,6 @@ open_pneumatron_mult_database <- function(files_path, ids, vld = FALSE, datetime
   PneumatronDatabase(
     data,
     file_path = files_path,
-    #file_path = paste0("c('", paste(samples, collapse = "','", sep = ","), "')"),
     data_format = "Mult"
   )
 }
