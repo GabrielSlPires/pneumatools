@@ -24,7 +24,7 @@ read_format_v2 <- function(file_path) {
 
   # Some files had a rownames column
   preview <- data.table::fread(file_path, nrows = 1)
-  col_index <- if (names(preview)[1] == "V1") 2:19 else 1:18
+  col_index <- if (dim(preview)[2] == 19) 2:19 else 1:18
 
   data <- data.table::fread(file_path, blank.lines.skip = TRUE, select = col_index, col.names = c(
     "id", "ms", "temp1", "atm_pres1", "humid1", "temp2", "atm_pres2", "humid2",
@@ -41,7 +41,7 @@ read_format_v2 <- function(file_path) {
 read_format_v2_update <- function(file_path) {
   # Avoid 'no visible binding for global variable ...' by initializing to NULL
   # https://github.com/Rdatatable/data.table/issues/850
-  pressure <- group <- NULL
+  pressure <- group <- temp1 <- NULL
 
   data <- data.table::fread(file_path, blank.lines.skip = TRUE, select = 1:6, col.names = c(
     "id", "seq", "measure", "log_line", "pressure", "datetime"
@@ -49,6 +49,7 @@ read_format_v2_update <- function(file_path) {
   # Adjust pressure from relative to absolute values
   data[, pressure := 101.325 - pressure]
   data[, group := 0]
+  data[, temp1 := 0]
   return(data)
 }
 

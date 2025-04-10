@@ -18,11 +18,11 @@
 #' @examples
 #' \dontrun{
 #' df <- data.frame(
-#' id = 1:5,
-#' pneumatron_id = 1:5,
-#' start_datetime = as.POSIXct(Sys.time() + 1:5),
-#' end_datetime = as.POSIXct(Sys.time() + 6:10),
-#' pneumatron_file = c("file1.csv", "file2.csv", "file3.csv", "file4.csv", "file5.csv")
+#'   id = 1:5,
+#'   pneumatron_id = 1:5,
+#'   start_datetime = as.POSIXct(Sys.time() + 1:5),
+#'   end_datetime = as.POSIXct(Sys.time() + 6:10),
+#'   pneumatron_file = c("file1.csv", "file2.csv", "file3.csv", "file4.csv", "file5.csv")
 #' )
 #' is_experiments_table(df) # returns TRUE
 #' }
