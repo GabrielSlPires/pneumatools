@@ -74,7 +74,7 @@ prepare_data_for_gas_discharged <- function(data, pressure_interval) {
   # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
   # Reference: https://github.com/Rdatatable/data.table/issues/850
   log_line_count <- .N <- id <- measure <- group <- . <- datetime <-
-    log_line <- temp1 <- pressure <- day <- NULL
+    log_line <- temp1 <- pressure <- day <- repump_logical <- NULL
 
   # filter gas discharged measurements with less than required pressure logs
   data <- data[!is.na(id)]
@@ -83,19 +83,27 @@ prepare_data_for_gas_discharged <- function(data, pressure_interval) {
   data <- data[!is.na(pressure)]
   data[, day := format(datetime, format = "%d")]
   data[, log_line_count := .N, by = list(id, measure, group, day)]
+  data[, repump_logical := (pressure - data.table::shift(pressure)) < 0 , by = list(id, measure, group, day)]
   data <- data[data.table::between(log_line_count, pressure_interval*2, 120)]
 
 
-  data_prepared <- data[, .(
-    datetime = datetime[which(log_line == 1)],
-    sensor_temp = temp1[which(log_line == 1)],
-    sensor_p_atm = pressure[which(log_line == 1)],
-    log_line_count = .N,
-    initial_pressure_log_line = initial_pressure(log_line, pressure),
-    # pi = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure) + 1)))], # test difference with and without +1
-    pi = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure))))],
-    pf = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure) + pressure_interval*2)))]
-  ), by = list(id, measure, group, day)] # I used to have a grouping by day
+  data_prepared <- data[, {
+    initial_p <- initial_pressure(log_line, pressure)
+    repump_count <- sum(repump_logical[which(
+      data.table::between(log_line, initial_p + 1, initial_p + pressure_interval*2)
+    )], na.rm = TRUE)
+    .(
+      datetime = datetime[which(log_line == 1)],
+      sensor_temp = temp1[which(log_line == 1)],
+      sensor_p_atm = pressure[which(log_line == 1)],
+      log_line_count = .N,
+      initial_pressure_log_line = initial_p,
+      # pi = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure) + 1)))], # test difference with and without +1
+      pi = pressure[which.min(abs(log_line - (initial_p)))], #busca o log_line mais proximo de initial_pressure_log_line
+      pf = pressure[which.min(abs(log_line - (initial_p + pressure_interval*2)))],
+      repump = repump_count
+    )
+  }, by = list(id, measure, group, day)] # I used to have a grouping by day
 
   return(data_prepared)
 }
@@ -122,3 +130,4 @@ initial_pressure <- function(log_line, pressure) {
 
   return(initial_p_log)
 }
+
