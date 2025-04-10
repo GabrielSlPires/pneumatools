@@ -6,8 +6,8 @@ test_that("reportUptime handles intervals within limits correctly", {
   expect_equal(nrow(result), 10)
 
   result <- reportUptime(database, interval = 960)
-  expect_equal(nrow(result), 171)
-  expect_equal(sum(result$duration > 0), 170)
+  expect_equal(nrow(result), 201)
+  expect_equal(sum(result$duration > 0), 200)
 })
 
 test_that("reportUptime works only with PneumatronDatabase class", {

@@ -74,15 +74,17 @@ prepare_data_for_gas_discharged <- function(data, pressure_interval) {
   # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
   # Reference: https://github.com/Rdatatable/data.table/issues/850
   log_line_count <- .N <- id <- measure <- group <- . <- datetime <-
-    log_line <- temp1 <- pressure <- NULL
+    log_line <- temp1 <- pressure <- day <- NULL
 
   # filter gas discharged measurements with less than required pressure logs
   data <- data[!is.na(id)]
   data <- data[!is.na(measure)]
   data <- data[!is.na(group)]
   data <- data[!is.na(pressure)]
-  data[, log_line_count := .N, by = list(id, measure, group)]
-  data <- data[log_line_count >= pressure_interval*2]
+  data[, day := format(datetime, format = "%d")]
+  data[, log_line_count := .N, by = list(id, measure, group, day)]
+  data <- data[data.table::between(log_line_count, pressure_interval*2, 120)]
+
 
   data_prepared <- data[, .(
     datetime = datetime[which(log_line == 1)],
@@ -93,7 +95,7 @@ prepare_data_for_gas_discharged <- function(data, pressure_interval) {
     # pi = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure) + 1)))], # test difference with and without +1
     pi = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure))))],
     pf = pressure[which.min(abs(log_line - (initial_pressure(log_line, pressure) + pressure_interval*2)))]
-  ), by = list(id, measure, group)] # I used to have a grouping by day
+  ), by = list(id, measure, group, day)] # I used to have a grouping by day
 
   return(data_prepared)
 }
@@ -112,7 +114,7 @@ initial_pressure <- function(log_line, pressure) {
   if (length(log_line) < 10) return(NA)
 
   initial_p_log <- tryCatch({
-    log_index <- which.min(pressure[1:7])
+    log_index <- which.min(pressure[1:30])
     log_line[log_index]
   },
   error = function(e) 3,
