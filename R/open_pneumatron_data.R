@@ -13,6 +13,10 @@
 #' }
 #' @export
 open_pneumatron_database <- function(file_path, data_format = "V4") {
+  # Prevent 'no visible binding for global variable ...' warnings by initializing to NULL
+  # Reference: https://github.com/Rdatatable/data.table/issues/850
+  fix_measure_restart <- seq <- measure <- id <- measure_original <- NULL
+
   if (!is.character(file_path) || length(file_path) != 1) {
     stop("file_path must be a single character string.")
   }
@@ -28,6 +32,12 @@ open_pneumatron_database <- function(file_path, data_format = "V4") {
     "V4" = read_format_v4(file_path),
     stop("Unsupported data format provided")
   )
+
+  # increase inner version count with this
+  data[, fix_measure_restart := cumsum(c(0, diff(seq) < 0) * data.table::shift(measure, fill = 0)), by = id]
+  data[, measure_original := measure]
+  data[, measure := measure + fix_measure_restart]
+  data[, fix_measure_restart := NULL]
 
   PneumatronDatabase(data, file_path = file_path, data_format = data_format)
 }
