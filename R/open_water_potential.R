@@ -15,10 +15,9 @@
 #' water <- open_water_potential("data/experiment_1.csv")
 #' water <- open_water_potential("data/experiment_1.csv", lubridate::ymd_hms)
 #' }
-#' @import data.table
-#' @import lubridate
 #' @export
 open_water_potential <- function(file_path, time_parser = lubridate::dmy_hm) {
+  id <- time <- pot <- NULL
   df <- data.table::fread(file_path, fill = TRUE)
 
   # Ensure column names are 'id', 'time', and 'pot'
